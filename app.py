@@ -3,98 +3,42 @@ import pandas as pd
 from datetime import datetime as dt
 import datetime
 
-# 버튼 클릭
-button = st.button('버튼을 눌러보세요')
+df1 = pd.read_excel('bar_data.xlsx', sheet_name='CON')    #이음길이 데이터 불러오기
+df2 = pd.read_excel('bar_data.xlsx', sheet_name='SET')    #정착길이 데이터 불러오기
+df3 = pd.read_excel('bar_data.xlsx', sheet_name='ETC')    #기타 데이터 불러오기
 
-if button:
-    st.write(':blue[버튼]이 눌렸습니다 :sparkles:')
-
-
-# 파일 다운로드 버튼
-# 샘플 데이터 생성
-dataframe = pd.DataFrame({
-    'first column': [1, 2, 3, 4],
-    'second column': [10, 20, 30, 40],
-})
-
-# 다운로드 버튼 연결
-st.download_button(
-    label='CSV로 다운로드',
-    data=dataframe.to_csv(), 
-    file_name='sample.csv', 
-    mime='text/csv'
-)
-
-# 체크 박스
-agree = st.checkbox('동의 하십니까?')
-
-if agree:
-    st.write('동의 해주셔서 감사합니다 :100:')
-
-# 라디오 선택 버튼
-mbti = st.radio(
-    '당신의 MBTI는 무엇입니까?',
-    ('ISTJ', 'ENFP', '선택지 없음'))
-
-if mbti == 'ISTJ':
-    st.write('당신은 :blue[현실주의자] 이시네요')
-elif mbti == 'ENFP':
-    st.write('당신은 :green[활동가] 이시네요')
-else:
-    st.write("당신에 대해 :red[알고 싶어요]:grey_exclamation:")
+st.text('철근가공조립길이')
+st.text('Test용 - 정림건축구조일반사항 자료 기준')
 
 # 선택 박스
-mbti = st.selectbox(
-    '당신의 MBTI는 무엇입니까?',
-    ('ISTJ', 'ENFP', '선택지 없음'), 
-    index=2
-)
+con_list = ['21', '24', '27', '30']
+con = st.selectbox('콘크리트 강도 (MPa)', con_list, index=0)
 
-if mbti == 'ISTJ':
-    st.write('당신은 :blue[현실주의자] 이시네요')
-elif mbti == 'ENFP':
-    st.write('당신은 :green[활동가] 이시네요')
-else:
-    st.write("당신에 대해 :red[알고 싶어요]:grey_exclamation:")
+bar_list = ['400', '500', '600']
+bar = st.selectbox('철근 강도 (MPa)', bar_list)
 
-# 다중 선택 박스
-options = st.multiselect(
-    '당신이 좋아하는 과일은 뭔가요?',
-    ['망고', '오렌지', '사과', '바나나'],
-    ['망고', '오렌지'])
+mem_list=list(set(df1['부재'].tolist()))
+mem_list.sort()
+mem = st.selectbox('부재', mem_list)
 
-st.write(f'당신의 선택은: :red[{options}] 입니다.')
+loc_list=df1[df1['부재']==mem]['구분'].tolist()
+loc = st.selectbox('위치', loc_list)
 
+dia_list=['D10', 'D13', 'D16', 'D19', 'D22', 'D25']
+dia = st.selectbox('철근직경', dia_list)
 
-# 슬라이더
-values = st.slider(
-    '범위의 값을 다음과 같이 지정할 수 있어요:sparkles:',
-    0.0, 100.0, (25.0, 75.0))
-st.write('선택 범위:', values)
-
-start_time = st.slider(
-    "언제 약속을 잡는 것이 좋을까요?",
-    min_value=dt(2020, 1, 1, 0, 0), 
-    max_value=dt(2020, 1, 7, 23, 0),
-    value=dt(2020, 1, 3, 12, 0),
-    step=datetime.timedelta(hours=1),
-    format="MM/DD/YY - HH:mm")
-st.write("선택한 약속 시간:", start_time)
+dia1 = con + bar + dia
+is_member = df1['부재'] == mem
+is_locate = df1['구분'] == loc
+ans1 = df1.loc[is_member & is_locate, dia1].tolist()[0]
+ans2 = df2.loc[is_member & is_locate, dia1].tolist()[0]
+ans3 = df3[dia1].tolist()[0]
+ans4 = df3[dia1].tolist()[1]
+ans5 = df3[dia1].tolist()[2]
 
 
-# 텍스트 입력
-title = st.text_input(
-    label='가고 싶은 여행지가 있나요?', 
-    placeholder='여행지를 입력해 주세요'
-)
-st.write(f'당신이 선택한 여행지: :violet[{title}]')
-
-# 숫자 입력
-number = st.number_input(
-    label='나이를 입력해 주세요.', 
-    min_value=10, 
-    max_value=100, 
-    value=30,
-    step=5
-)
-st.write('당신이 입력하신 나이는:  ', number)
+st.write(f'인장이음길이(B급): {ans1}mm ')
+st.write(f'인장정착길이: {ans2}mm ')
+st.write(f'표준갈고리(Ldh): {ans3}mm ')
+st.write(f'압축이음길이(Lsc): {ans4}mm ')
+st.write(f'압축정착길이(Ldc): {ans5}mm ')
