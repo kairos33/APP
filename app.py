@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import openpyxl
 
 df1 = pd.read_excel('bar_data.xlsx', sheet_name='CON')    #이음길이 데이터 불러오기
 df2 = pd.read_excel('bar_data.xlsx', sheet_name='SET')    #정착길이 데이터 불러오기
