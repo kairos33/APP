@@ -10,7 +10,7 @@ st.text('Test용 - 정림건축구조일반사항 자료 기준')
 
 # 선택 박스
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([1,2])
 
 with col1:
     st.write('콘크리트 강도 (MPa)')
