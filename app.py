@@ -10,35 +10,25 @@ st.text('Test용 - 정림건축구조일반사항 자료 기준')
 
 # 선택 박스
 
-col1, col2 = st.columns([1,2])
+col1, col2 = st.columns(2)
 
 with col1:
-    st.write('콘크리트 강도 (MPa)')
-    
-with col2:
     con_list = ['21', '24', '27', '30']
     con = st.selectbox('콘크리트 강도 (MPa)', con_list, label_visibility='collapsed')
-    
-col3, col4 = st.columns(2)
-with col3:
-    st.write('철근 강도 (MPa)')
-    st.write('부재')
-    st.write('위치')
-    st.write('철근직경')
-
-with col4:
-    bar_list = ['400', '500', '600']
-    bar = st.selectbox('철근 강도 (MPa)', bar_list, label_visibility='collapsed')
     
     mem_list=list(set(df1['부재'].tolist()))
     mem_list.sort()
     mem = st.selectbox('부재', mem_list, label_visibility='collapsed')
     
-    loc_list=df1[df1['부재']==mem]['구분'].tolist()
-    loc = st.selectbox('위치', loc_list, label_visibility='collapsed')
-    
     dia_list=['D10', 'D13', 'D16', 'D19', 'D22', 'D25']
     dia = st.selectbox('철근직경', dia_list, label_visibility='collapsed')
+    
+with col2:
+    bar_list = ['400', '500', '600']
+    bar = st.selectbox('철근 강도 (MPa)', bar_list, label_visibility='collapsed')
+    
+    loc_list=df1[df1['부재']==mem]['구분'].tolist()
+    loc = st.selectbox('위치', loc_list, label_visibility='collapsed')
 
 dia1 = con + bar + dia
 is_member = df1['부재'] == mem
