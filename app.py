@@ -5,6 +5,7 @@ df1 = pd.read_excel('bar_data.xlsx', sheet_name='CON')    #이음길이 데이�
 df2 = pd.read_excel('bar_data.xlsx', sheet_name='SET')    #정착길이 데이터 불러오기
 df3 = pd.read_excel('bar_data.xlsx', sheet_name='ETC')    #기타 데이터 불러오기
 
+st.set_page_config(layout="wide")
 st.write('### 철근 이음,정착길이')
 st.text('Test용 - 정림건축구조일반사항 자료 기준')
 
