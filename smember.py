@@ -10,6 +10,7 @@ member = st.pills('부재선택', mem_list)
 if member == '기둥':
     col_list = os.listdir('./IMG/COL')
     col_list = [ext.strip('.png') for ext in col_list]
+    col_list.sort()
     col = st.pills('기둥선택', col_list)
     try:
         st.image(f'./IMG/COL/{col}.png')
@@ -23,6 +24,7 @@ elif member == '벽체':
     
 elif member == '보':
     floor_list = os.listdir('./IMG/BEAM')
+    floor_list.sort()
     floor = st.pills('층선택', floor_list)
     
     try:
